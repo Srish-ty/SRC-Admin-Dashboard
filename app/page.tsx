@@ -1,31 +1,40 @@
 "use client";
-
 import { Button } from "flowbite-react";
+import { AuthContext } from "@/context/AuthContext";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Home() {
-  const router = useRouter();
+export default function Page() {
+    const { userInfo, handleGoogleSignIn } = useContext(AuthContext);
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+    const handleLoginWithGoogle = async () => {
+        try {
+            setLoading(true);
+            await handleGoogleSignIn();
+        } catch (error) {
+            console.error("Error signing in with Google:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const navigateToUserDashboard = () => {
-    router.push('/dashboard/users');
-  };
-  const navigateToTeamsDashboard = () => {
-    router.push('/dashboard/teams');
-  };
+    useEffect(() => {
+        if (userInfo.uid) {
+            router.push("/dashboard");
+        }
+    }, [userInfo]);
 
-  return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="flex flex-col justify-center items-center">
-        <div className="mb-4 text-3xl text-center">
-          Click on the buttons to visit the respective dashboard.
+    return (
+        <div className="flex justify-center items-center h-screen">
+            <Button
+                color="gray"
+                className="w-2/5 mb-3"
+                onClick={handleLoginWithGoogle}
+                disabled={loading}
+            >
+                {loading ? "Loading..." : "Sign in with Google"}
+            </Button>
         </div>
-        <Button color="gray" className="w-2/5 mb-3" onClick={navigateToUserDashboard}>
-          Go to Users Dashboard
-        </Button>
-        <Button color="gray" className="w-2/5" onClick={navigateToTeamsDashboard}>
-          Go to Teams Dashboard
-        </Button>
-      </div>
-    </div>
-  );
+    );
 }
