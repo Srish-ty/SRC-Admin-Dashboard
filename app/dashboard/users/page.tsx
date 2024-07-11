@@ -1,6 +1,7 @@
 "use client";
 
 import { Table, Select, Button } from "flowbite-react";
+import { data } from "./sampleData";
 
 export default function Component() {
   const eventsList = [
@@ -26,7 +27,7 @@ export default function Component() {
   return (
     <main>
       <div className="flex pl-3 pr-3 mt-3 mb-4 justify-between items-center">
-        <div className="text-3xl">SRC_2k24 Admin Dashboard</div>
+        <div className="text-3xl">SRC-2024 Admin Dashboard</div>
         <div className="flex gap-x-4 items-center">
           <div className="text-3xl">Select the event :</div>
           <Select id="countries" required className="w-auto min-w-0">
@@ -45,30 +46,24 @@ export default function Component() {
             ))}
           </Table.Head>
           <Table.Body className="divide-y">
-            <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-              <Table.Cell className=" font-medium text-gray-900 dark:text-white">
-                Apple MacBook Pro 17
-              </Table.Cell>
-              <Table.Cell>Sliver</Table.Cell>
-              <Table.Cell>Laptop</Table.Cell>
-              <Table.Cell>$2999</Table.Cell>
-            </Table.Row>
-            <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                Microsoft Surface Pro
-              </Table.Cell>
-              <Table.Cell>White</Table.Cell>
-              <Table.Cell>Laptop PC</Table.Cell>
-              <Table.Cell>$1999</Table.Cell>
-            </Table.Row>
-            <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                Magic Mouse 2
-              </Table.Cell>
-              <Table.Cell>Black</Table.Cell>
-              <Table.Cell>Accessories</Table.Cell>
-              <Table.Cell>$99</Table.Cell>
-            </Table.Row>
+          {data.user.map((user, index) => (
+              <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                <Table.Cell className="font-medium text-gray-900 dark:text-white">
+                  {user.name}
+                </Table.Cell>
+                <Table.Cell>{user.mail}</Table.Cell>
+                <Table.Cell>{user.mobile}</Table.Cell>
+                <Table.Cell>{user.college}</Table.Cell>
+                <Table.Cell>
+                  <a href={user.idCard} className="text-blue-600 hover:underline" target="_blank">
+                    View ID Card
+                  </a>
+                </Table.Cell>
+                <Table.Cell>{user.aiche_id}</Table.Cell>
+                <Table.Cell>{user.srcId}</Table.Cell>
+                <Table.Cell>{user.tShirt}</Table.Cell>
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       </div>
