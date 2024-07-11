@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { toast } from "react-hot-toast";
 import { auth, signInWithGoogle, signOutUser } from "@/config/Firebase/auth";
+import { useRouter } from "next/navigation";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {

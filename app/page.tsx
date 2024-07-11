@@ -1,12 +1,13 @@
 "use client";
 import { Button } from "flowbite-react";
 import { AuthContext } from "@/context/AuthContext";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
     const { userInfo, handleGoogleSignIn } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
-
+    const router = useRouter();
     const handleLoginWithGoogle = async () => {
         try {
             setLoading(true);
@@ -17,6 +18,12 @@ export default function Page() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (userInfo.uid) {
+            router.push("/dashboard");
+        }
+    }, [userInfo]);
 
     return (
         <div className="flex justify-center items-center h-screen">
