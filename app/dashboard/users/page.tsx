@@ -31,6 +31,10 @@ export default function Component() {
     setEvent(event);
   }
 
+  const handleButtonClick = () => {
+    console.log("Selected event:", event);
+  };
+
   return (
     <main>
       <div className="flex pl-3 pr-3 mt-3 mb-4 justify-between items-center">
@@ -48,7 +52,7 @@ export default function Component() {
               <option key={event}>{event}</option>
             ))}
           </Select>
-          <Button onClick={() => handleSelect(event)}>Fetch Details</Button>
+          <Button onClick={handleButtonClick}>Fetch Details</Button>
         </div>
       </div>
       <div className="overflow-x-auto pl-3 pr-3">
