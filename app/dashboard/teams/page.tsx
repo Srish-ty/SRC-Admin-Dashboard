@@ -59,12 +59,12 @@ export default function Component() {
           <div className="flex flex-col gap-x-2 ml-4 mb-4">
             {team.members.map((member, i) =>
               data.user.find((user) => user.name === member) ? (
-                <div key={i} className="text-xl text-left">
-                  {i + 1}. {member}{" "}
+                <div key={i} className="text-xl text-left flex gap-x-2">
+                  {i + 1}. {member}{" | "}
                   <div>
-                    aicheID:{" "}
+                    aiche_ID:
                     {data.user.find((user) => user.name === member)?.aiche_id}
-                  </div>{" "}
+                  </div>{"|"}
                   <a
                     href={
                       data.user.find((user) => user.name === member)?.idCard
