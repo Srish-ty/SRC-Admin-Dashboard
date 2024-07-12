@@ -72,7 +72,7 @@ const UsersMainComponent = () => {
   );
 
   const cellStyle = {
-    borderRight: "1px solid #e6e6e6",
+    borderRight: "0.2px solid #f5f5f5",
     borderBottom: "0.1px solid #ababab",
     padding: "8px",
   };
