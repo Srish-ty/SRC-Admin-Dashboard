@@ -29,12 +29,12 @@ const teamInfo: { [key: string]: { teamName: string; members: string[] }[] } = {
   };
 
 
-  const eventsList = [
-    "Chem-E-Car",
-    "Chem-E-Jeopardy",
-    "K-12 Stem",
-    "Student Poster Competition",
-    "Student Technical Paper",
+  export const eventsList = [
+    "CHEM-E-CAR",
+    "CHEM-E-JEOPARDY",
+    "K-12 STEM",
+    "STUDENT POSTER COMPETETION",
+    "STUDENT TECHNICAL PAPER",
   ];
 
  

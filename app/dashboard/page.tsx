@@ -5,9 +5,12 @@ import Link from "next/link";
 import { useContext, useEffect } from "react";
 
 import { AuthContext } from "@/context/AuthContext";
+import { RoutePageData } from "@/staticData/staticData";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
     const { handleSignOut, userInfo } = useContext(AuthContext);
+    const router = useRouter()
 
     useEffect(() => {
         const authToken = localStorage.getItem("auth-token");
@@ -17,29 +20,17 @@ export default function Home() {
     }, [userInfo]);
 
     return (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center bg-black h-screen">
             <div className="flex flex-col justify-center items-center">
-                <Button color="gray" className="mb-4" onClick={handleSignOut}>
-                    Logout{" "}
-                </Button>
-                <div className="mb-4 text-3xl text-center">
-                    Click on the buttons to visit the respective dashboard.
-                </div>
-                <Link href="/dashboard/users">
-                    <Button color="gray" className="mb-3">
-                        Go to Users Dashboard
-                    </Button>
-                </Link>
-                <Link href="/dashboard/teams">
-                    <Button color="gray" className="mb-3">
-                        Go to Teams Dashboard
-                    </Button>
-                </Link>
-                <Link href="/dashboard/sampleQuery">
-                    <Button color="gray" className="mb-3">
-                        Go to Sample Query Page
-                    </Button>
-                </Link>
+
+            {RoutePageData.map((item,index)=>(
+                <Button key={index} color="dark" className="mb-4 w-full" onClick={()=>router.push(`/dashboard/${item.uri}`)}>
+                    {item.route}
+                </Button>))}
+                <Button color="failure" className="w-full mb-4 h-10" onClick={handleSignOut}>logout</Button>
+               
+               
+                
             </div>
         </div>
     );

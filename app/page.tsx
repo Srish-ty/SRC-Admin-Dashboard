@@ -23,18 +23,21 @@ export default function Page() {
         if (userInfo.uid) {
             router.push("/dashboard");
         }
-    }, [userInfo]);
+    }, [userInfo.uid,router]);
 
     return (
         <div className="flex justify-center items-center h-screen">
+            <div className="flex flex-col gap-2 items-center">
+            <div className="text-xl font-bold text-black">Hey Welcome!</div>
             <Button
-                color="gray"
-                className="w-2/5 mb-3"
+                color="dark"
+                className="flex justify-center items-center w-full mb-3 h-12"
                 onClick={handleLoginWithGoogle}
                 disabled={loading}
             >
                 {loading ? "Loading..." : "Sign in with Google"}
             </Button>
+            </div>
         </div>
     );
 }
