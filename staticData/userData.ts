@@ -5,7 +5,7 @@ export const tableHeadings = [
     "Mail ID",
     "College",
     "ID Card",
-    "AICHE ID",
+    "AICHE MEMBERSHIP ID",
     "SRC ID",
     "T-Shirt Size",
   ];

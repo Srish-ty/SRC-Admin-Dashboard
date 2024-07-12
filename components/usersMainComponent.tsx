@@ -3,7 +3,7 @@ import GET_ALL_USERS from "@/graphql/queries/getIndividualusers";
 import { orgId } from "@/staticData/gqVars";
 import { Navdata, tableHeadings } from "@/staticData/userData";
 import { useQuery } from "@apollo/client";
-import { Button, Table } from "flowbite-react";
+import { Button, Table, TextInput } from "flowbite-react";
 import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
@@ -22,7 +22,13 @@ interface User {
 }
 
 const UsersMainComponent = () => {
-  const [user, setUser] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [searchQueries, setSearchQueries] = useState({
+    name: "",
+    email: "",
+    mobile: "",
+    college: "",
+  });
 
   const {
     data: allTeamsData,
@@ -37,7 +43,7 @@ const UsersMainComponent = () => {
   useEffect(() => {
     if (allTeamsData) {
       console.log(allTeamsData);
-      setUser(allTeamsData?.getAllUsers);
+      setUsers(allTeamsData?.getAllUsers);
       toast.success("Teams fetched successfully");
     }
     if (Error) {
@@ -48,10 +54,33 @@ const UsersMainComponent = () => {
 
   if (Loading) return <div>Loading...</div>;
 
+  const handleSearchChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: string
+  ) => {
+    setSearchQueries({ ...searchQueries, [field]: e.target.value });
+  };
+
+  const filteredUsers = users.filter((user) =>
+    Object.keys(searchQueries).every((key) => {
+      const userValue = (user as any)[key] || ""; // Fallback to an empty string if the value is null or undefined
+      return userValue
+        .toLowerCase()
+        .includes((searchQueries as any)[key].toLowerCase());
+    })
+  );
+
   const cellStyle = {
-    borderRight: "0px solid #e6e6e6",
+    borderRight: "1px solid #e6e6e6",
     borderBottom: "0.1px solid #ababab",
     padding: "8px",
+  };
+
+  const inputStyle = {
+    padding: "6px 8px",
+    borderRadius: "4px",
+    border: "1px solid #6ec2b7",
+    fontSize: "14px",
   };
 
   return (
@@ -70,8 +99,36 @@ const UsersMainComponent = () => {
               </Table.HeadCell>
             ))}
           </Table.Head>
+          <Table.Head>
+            {[
+              "name",
+              "id",
+              "mobile",
+              "email",
+              "college",
+              "idCardPhoto",
+              "srcID",
+              "tSize",
+            ].map((field) => (
+              <Table.HeadCell key={field} className="p-0">
+                {(field === "name" ||
+                  field === "email" ||
+                  field === "mobile" ||
+                  field === "college") && (
+                  <TextInput
+                    type="text"
+                    placeholder={`Search ${field.toUpperCase()}`}
+                    value={(searchQueries as any)[field]}
+                    onChange={(e) => handleSearchChange(e, field)}
+                    className="w-full text-sm bg-[#9e9e9e]"
+                    style={inputStyle}
+                  />
+                )}
+              </Table.HeadCell>
+            ))}
+          </Table.Head>
           <Table.Body className="divide-y">
-            {user.map((user, index) => (
+            {filteredUsers.map((user, index) => (
               <Table.Row
                 key={index}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-200 hover:text-gray-700"
