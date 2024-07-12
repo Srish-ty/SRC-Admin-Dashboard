@@ -108,6 +108,7 @@ const UsersMainComponent = () => {
               "email",
               "college",
               "idCardPhoto",
+              "aicheRegID",
               "srcID",
               "tSize",
             ].map((field) => (
@@ -115,7 +116,8 @@ const UsersMainComponent = () => {
                 {(field === "name" ||
                   field === "email" ||
                   field === "mobile" ||
-                  field === "college") && (
+                  field === "college" ||
+                  field === "srcID") && (
                   <TextInput
                     type="text"
                     placeholder={`Search ${field.toUpperCase()}`}
