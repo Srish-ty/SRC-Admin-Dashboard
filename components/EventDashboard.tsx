@@ -17,14 +17,15 @@ const Dashboard = ({ eventName }: MainTeamComponentProps) => {
     <div className="lg:fixed flex justify-center ">
       <Sidebar
         aria-label="Default sidebar example"
-        className="h-auto lg:h-screen w-screen  lg:w-auto"
+        className="h-auto lg:h-screen w-screen  lg:w-auto flex justify-center"
       >
-        <div className="flex flex-col items-center gap-y-2 ">
+        <div className="flex justify-center w-full">
+        <div className="flex flex-col items-center gap-y-2 w-full">
           {eventsList.map((event, index) => (
             <Link
               key={index}
               href={`/dashboard/events/${event}`}
-              className="w-[350px] lg:w-full"
+              className="w-[350px] lg:w-full flex justify-center"
             >
               <Button
                 className={`w-[80%] flex justify-center items-center bg-gray-800 h-auto p-2 text-white hover:bg-gray-700 ${
@@ -35,6 +36,7 @@ const Dashboard = ({ eventName }: MainTeamComponentProps) => {
               </Button>
             </Link>
           ))}
+        </div>
         </div>
       </Sidebar>
     </div>
