@@ -22,7 +22,7 @@ const Header=()=>{
                   >
                     {event.route}
                   </Button>
-                ))}<Button color="failure" className="" onClick={handleSignOut&&(()=>router.push("/"))}>logout</Button>
+                ))}<Button color="failure" className="" onClick={()=>{handleSignOut();router.push('/')}}>logout</Button>
               </div>
             </div>
           </div>
