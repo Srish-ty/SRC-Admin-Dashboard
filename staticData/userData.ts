@@ -11,5 +11,5 @@ export const tableHeadings = [
   ];
 
 export const Navdata=[
-    {route:"home",uri:"/"},{route:"users",uri:"/users"},{route:"teams",uri:`/teams/${"CHEM-E-CAR"}`}
+    {route:"home",uri:""},{route:"users",uri:"users"},{route:"events",uri:`events/${"CHEM-E-CAR"}`}
 ]
