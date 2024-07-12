@@ -19,12 +19,12 @@ const Dashboard = ({ eventName }: MainTeamComponentProps) => {
         aria-label="Default sidebar example"
         className="h-auto lg:h-screen w-screen  lg:w-auto"
       >
-        <div className="flex flex-col items-center gap-y-2 w-screen lg:w-full ">
+        <div className="flex flex-col items-center gap-y-2 w-screen">
           {eventsList.map((event, index) => (
             <Link
               key={index}
               href={`/dashboard/events/${event}`}
-              className="w-full"
+              className="w-[350px] lg:w-full"
             >
               <Button
                 className={`w-[80%] flex justify-center items-center bg-gray-800 h-auto p-2 text-white hover:bg-gray-700 ${

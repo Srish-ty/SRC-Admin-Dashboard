@@ -70,13 +70,6 @@ const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
     setSelectedImageUrl(null);
     setIsModalOpen(false);
   };
-  const {
-    data: allTeamsData,
-    error,
-    loading
-  } = useQuery(GET_ALL_TEAMS, {
-    variables: { orgId }
-  });
 
   useEffect(() => {
     if (allTeamsData) {
@@ -158,33 +151,37 @@ type TeamTableProps = {
 };
 
 const TeamTable = ({ users }: TeamTableProps) => (
-  <Table hoverable>
-    <Table.Head className="bg-gray-100">
-      {HEADINGS.map((item, index) => (
-        <Table.HeadCell key={index} className="text-gray-700 font-semibold">
-          {item}
-        </Table.HeadCell>
-      ))}
-    </Table.Head>
-    <Table.Body className="divide-y bg-white">
-      {users.map((user, index) => (
-        <Table.Row
-          key={index}
-          className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50"
-        >
-          <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-            {index + 1}
-          </Table.Cell>
-          <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-            {user.name}
-          </Table.Cell>
-          <Table.Cell className="text-gray-700">{user.srcID || "-"}</Table.Cell>
-          <Table.Cell>{user.college}</Table.Cell>
-          <Table.Cell>{user.mobile}</Table.Cell>
-        </Table.Row>
-      ))}
-    </Table.Body>
-  </Table>
+  <div className="overflow-x-auto">
+    <Table hoverable>
+      <Table.Head className="bg-gray-100">
+        {HEADINGS.map((item, index) => (
+          <Table.HeadCell key={index} className="text-gray-700 font-semibold">
+            {item}
+          </Table.HeadCell>
+        ))}
+      </Table.Head>
+      <Table.Body className="divide-y bg-white">
+        {users.map((user, index) => (
+          <Table.Row
+            key={index}
+            className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50"
+          >
+            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+              {index + 1}
+            </Table.Cell>
+            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+              {user.name}
+            </Table.Cell>
+            <Table.Cell className="text-gray-700">
+              {user.srcID || "-"}
+            </Table.Cell>
+            <Table.Cell>{user.college}</Table.Cell>
+            <Table.Cell>{user.mobile}</Table.Cell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table>
+  </div>
 );
 type IndividualEventTableProps = {
   users: User[];
