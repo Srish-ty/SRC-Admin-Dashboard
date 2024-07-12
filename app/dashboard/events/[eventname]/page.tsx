@@ -8,5 +8,3 @@ const Chem_A_Car = ({params}:{params:{eventname:string}}) => {
         </div>
     )
 }
-
-export default Chem_A_Car

@@ -23,8 +23,8 @@ const Dashboard = ({ eventName }: MainTeamComponentProps) => {
           {eventsList.map((event, index) => (
             <Link
               key={index}
-              href={`/dashboard/teams/${event}`}
-              className="w-[30%] lg:w-full"
+              href={`/dashboard/events/${event}`}
+              className="w-full"
             >
               <Button
                 className={`w-[80%] flex justify-center items-center bg-gray-800 h-auto p-2 text-white hover:bg-gray-700 ${

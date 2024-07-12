@@ -6,7 +6,13 @@ import GET_ALL_TEAMS from "@/graphql/queries/getTeamUsers";
 import { orgId } from "@/staticData/gqVars"; // Import the modal component
 import IdCardModal from "./IdCardModal";
 
-const HEADINGS = ["S.No.", "Member Name", "AIChE ID", "ID Card"];
+const HEADINGS = [
+  "S.No.",
+  "Member Name",
+  "SRC ID",
+  "College Name",
+  "Mobile No."
+];
 
 type MainTeamComponentProps = {
   eventName: string;
@@ -16,6 +22,8 @@ type User = {
   idCardPhoto: string | null;
   srcID: string | null;
   name: string;
+  college: string | null;
+  mobile: string;
 };
 
 type TeamRegistration = {
@@ -62,6 +70,13 @@ const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
     setSelectedImageUrl(null);
     setIsModalOpen(false);
   };
+  const {
+    data: allTeamsData,
+    error,
+    loading
+  } = useQuery(GET_ALL_TEAMS, {
+    variables: { orgId }
+  });
 
   useEffect(() => {
     if (allTeamsData) {
@@ -103,11 +118,6 @@ const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
       ) : (
         <div>No teams registered for this event.</div>
       )}
-      <IdCardModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        imageUrl={selectedImageUrl}
-      />
     </div>
   );
 };
@@ -119,16 +129,22 @@ type TeamCardProps = {
 
 const TeamCard = ({ team, onImageClick }: TeamCardProps) => (
   <div className="border-2 w-full p-5 bg-black mb-6 shadow-md rounded-lg">
-    <div className="flex justify-between  font-bold text-center text-white mb-6">
-      <div className="flex text-base md:text-xl">
-        <div className="font-normal">TEAM-</div> {team.teamName}
+    <div className="flex justify-between text-xl text-center text-white mb-6">
+      <div className="flex">
+        <div className="font-normal">Team Name: </div>
+        <h2 className="text-teal-300 font-bold px-2"> {team.teamName} </h2>
       </div>
-      <a
-        href={team.submittedPDF}
-        className="hover:underline hover:cursor-pointer text-white"
-      >
-        submittedpdf
-      </a>
+      <span className="text-base">
+        Link to Submitted PDF:{" "}
+        <a
+          href={team.submittedPDF}
+          className="hover:underline text-sm hover:cursor-pointer hover:text-white underline text-blue-500"
+        >
+          {team.submittedPDF
+            ? team.submittedPDF.substring(0, 28) + "..."
+            : "No PDF Submitted"}
+        </a>
+      </span>
     </div>
     <div className="shadow-lg border-2 border-gray-300 rounded-lg overflow-hidden">
       <TeamTable users={team.users} onImageClick={onImageClick} />
@@ -141,50 +157,34 @@ type TeamTableProps = {
   onImageClick: (imageUrl: string) => void;
 };
 
-const TeamTable = ({ users, onImageClick }: TeamTableProps) => (
-  <div className="overflow-x-auto">
-    <Table hoverable className="min-w-full">
-      <Table.Head className="bg-gray-100">
-        {HEADINGS.map((item, index) => (
-          <Table.HeadCell key={index} className="text-gray-700 font-semibold">
-            {item}
-          </Table.HeadCell>
-        ))}
-      </Table.Head>
-      <Table.Body className="divide-y bg-white">
-        {users.map((user, index) => (
-          <Table.Row
-            key={index}
-            className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50"
-          >
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-              {index + 1}
-            </Table.Cell>
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-              {user.name}
-            </Table.Cell>
-            <Table.Cell className="text-gray-700">
-              {user.srcID || "N/A"}
-            </Table.Cell>
-            <Table.Cell>
-              {user.idCardPhoto ? (
-                <button
-                  onClick={() =>
-                    user.idCardPhoto && onImageClick(user.idCardPhoto)
-                  }
-                  className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                >
-                  🪪ID CARD
-                </button>
-              ) : (
-                "No ID Card"
-              )}
-            </Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
-  </div>
+const TeamTable = ({ users }: TeamTableProps) => (
+  <Table hoverable>
+    <Table.Head className="bg-gray-100">
+      {HEADINGS.map((item, index) => (
+        <Table.HeadCell key={index} className="text-gray-700 font-semibold">
+          {item}
+        </Table.HeadCell>
+      ))}
+    </Table.Head>
+    <Table.Body className="divide-y bg-white">
+      {users.map((user, index) => (
+        <Table.Row
+          key={index}
+          className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50"
+        >
+          <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+            {index + 1}
+          </Table.Cell>
+          <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+            {user.name}
+          </Table.Cell>
+          <Table.Cell className="text-gray-700">{user.srcID || "-"}</Table.Cell>
+          <Table.Cell>{user.college}</Table.Cell>
+          <Table.Cell>{user.mobile}</Table.Cell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table>
 );
 type IndividualEventTableProps = {
   users: User[];
@@ -217,22 +217,10 @@ const IndividualEventTable = ({
               {user.name}
             </Table.Cell>
             <Table.Cell className="text-gray-700">
-              {user.srcID || "N/A"}
+              {user.srcID || "-"}
             </Table.Cell>
-            <Table.Cell>
-              {user.idCardPhoto ? (
-                <button
-                  onClick={() =>
-                    user.idCardPhoto && onImageClick(user.idCardPhoto)
-                  }
-                  className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                >
-                  🪪ID CARD
-                </button>
-              ) : (
-                "No ID Card"
-              )}
-            </Table.Cell>
+            <Table.Cell>{user.college}</Table.Cell>
+            <Table.Cell>{user.mobile}</Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
