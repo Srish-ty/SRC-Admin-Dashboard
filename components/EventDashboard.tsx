@@ -14,12 +14,12 @@ const Dashboard = ({ eventName }: MainTeamComponentProps) => {
   const CN = decodeURIComponent(encodedString);
 
   return (
-    <div className="lg:fixed max-lg:flex justify-center w-full md:w-auto">
+    <div className="lg:fixed max-lg:flex max-lg:justify-center ">
       <Sidebar
         aria-label="Default sidebar example"
         className="h-auto lg:h-screen w-screen  lg:w-auto"
       >
-        <div className="flex flex-col items-center gap-y-2 w-screen">
+        <div className="flex flex-col items-center gap-y-2 ">
           {eventsList.map((event, index) => (
             <Link
               key={index}
