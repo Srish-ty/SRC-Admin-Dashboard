@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Header from "./Header";
+import LoaderComp from "./loader";
 
 interface User {
   name: string;
@@ -60,7 +61,7 @@ const UsersMainComponent = () => {
     }
   }, [allTeamsData, Error]);
 
-  if (Loading) return <div>Loading...</div>;
+  if (Loading) return <LoaderComp />;
 
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement>,
