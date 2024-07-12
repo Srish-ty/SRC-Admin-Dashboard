@@ -4,6 +4,7 @@ const GET_ALL_TEAMS= gql`
 query Query($orgId: ID) {
   getEvents(orgID: $orgId) {
    name
+   isTeamEvent
     teamRegistration {
       users {
         idCardPhoto
@@ -13,7 +14,16 @@ query Query($orgId: ID) {
       teamName
       submittedPDF
 
-    }}}
+    }
+    eventRegistration {
+      user {
+        srcID
+        name
+        idCardPhoto
+      }
+      submittedPDF
+    }
+  }}
 `
 
 export default GET_ALL_TEAMS

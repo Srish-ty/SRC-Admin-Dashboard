@@ -11,26 +11,22 @@ import NextTopLoader from "nextjs-toploader";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
-    children,
+  children
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-            <title>SRC Dashboard</title>
-            <body className={inter.className}>
-                <NextTopLoader
-                    color="#2563EB"
-                    showSpinner={false}
-                    easing="ease-in"
-                />
-                <ApolloProvider client={client}>
-                    <AuthProvider>
-                        {children}
-                        <Toaster />
-                    </AuthProvider>
-                </ApolloProvider>
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <title>SRC Dashboard</title>
+      <body className={inter.className}>
+        <NextTopLoader color="#2563EB" showSpinner={false} easing="ease-in" />
+        <ApolloProvider client={client}>
+          <AuthProvider>
+            {children}
+            <Toaster />
+          </AuthProvider>
+        </ApolloProvider>
+      </body>
+    </html>
+  );
 }

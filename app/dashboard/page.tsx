@@ -24,10 +24,13 @@ export default function Home() {
             <div className="flex flex-col justify-center items-center">
 
             {RoutePageData.map((item,index)=>(
-                <Button key={index} color="dark" className="mb-4 w-full" onClick={()=>router.push(`/dashboard/${item.uri}`)}>
+                <Link key={index}  href={`/dashboard/${item.uri}`}>
+                    <Button color="dark" className="mb-4 w-full">
+
                     {item.route}
-                </Button>))}
-                <Button color="failure" className="w-full mb-4 h-10" onClick={()=>{handleSignOut();router.push('/')}}>logout</Button>
+                    </Button>
+                </Link>))}
+                <Button color="failure" className="w-full mb-4 h-10" onClick={handleSignOut}>logout</Button>
                
                
                 
