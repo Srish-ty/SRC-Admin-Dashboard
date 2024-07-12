@@ -5,7 +5,13 @@ import toast from "react-hot-toast";
 import GET_ALL_TEAMS from "@/graphql/queries/getTeamUsers";
 import { orgId } from "@/staticData/gqVars";
 
-const HEADINGS = ["S.No.", "Member Name", "AIChE ID", "ID Card"];
+const HEADINGS = [
+  "S.No.",
+  "Member Name",
+  "SRC ID",
+  "College Name",
+  "Mobile No.",
+];
 
 type MainTeamComponentProps = {
   eventName: string;
@@ -15,6 +21,8 @@ type User = {
   idCardPhoto: string | null;
   srcID: string | null;
   name: string;
+  college: string | null;
+  mobile: string;
 };
 
 type TeamRegistration = {
@@ -22,15 +30,13 @@ type TeamRegistration = {
   teamName: string;
   submittedPDF: string;
   users: User[];
-  
 };
 
 type EventRegistration = {
   eventID: string;
   user: User;
   submittedPDF: string;
-
-}
+};
 
 type Event = {
   eventID: string;
@@ -43,7 +49,11 @@ type Event = {
 const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
   const [teams, setTeams] = useState<TeamRegistration[]>([]);
   const [users, setUsers] = useState<User[]>([]);
-  const { data: allTeamsData, error, loading } = useQuery(GET_ALL_TEAMS, {
+  const {
+    data: allTeamsData,
+    error,
+    loading,
+  } = useQuery(GET_ALL_TEAMS, {
     variables: { orgId },
   });
 
@@ -59,7 +69,11 @@ const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
         if (matchedEvent.isTeamEvent) {
           setTeams(matchedEvent.teamRegistration);
         } else {
-          setUsers(matchedEvent.eventRegistration.map((registration) => registration.user));
+          setUsers(
+            matchedEvent.eventRegistration.map(
+              (registration) => registration.user
+            )
+          );
         }
         toast.success("Event fetched successfully");
       }
@@ -79,11 +93,8 @@ const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
       ) : users.length > 0 ? (
         <IndividualEventTable users={users} />
       ) : (
-        
         <div>No teams registered for this event.</div>
-      )
-      
-      }
+      )}
     </div>
   );
 };
@@ -94,16 +105,22 @@ type TeamCardProps = {
 
 const TeamCard = ({ team }: TeamCardProps) => (
   <div className="border-2 w-full p-5 bg-black mb-6 shadow-md rounded-lg">
-    <div className="flex justify-between text-xl font-bold text-center text-white mb-6">
+    <div className="flex justify-between text-xl text-center text-white mb-6">
       <div className="flex">
-        <div className="font-normal">TEAM-</div> {team.teamName}
+        <div className="font-normal">Team Name: </div>
+        <h2 className="text-teal-300 font-bold px-2"> {team.teamName} </h2>
       </div>
-      <a
-        href={team.submittedPDF}
-        className="hover:underline hover:cursor-pointer text-white"
-      >
-        submittedpdf
-      </a>
+      <span className="text-base">
+        Link to Submitted PDF:{" "}
+        <a
+          href={team.submittedPDF}
+          className="hover:underline text-sm hover:cursor-pointer hover:text-white underline text-blue-500"
+        >
+          {team.submittedPDF
+            ? team.submittedPDF.substring(0, 28) + "..."
+            : "No PDF Submitted"}
+        </a>
+      </span>
     </div>
     <div className="shadow-lg border-2 border-gray-300 rounded-lg overflow-hidden">
       <TeamTable users={team.users} />
@@ -136,21 +153,9 @@ const TeamTable = ({ users }: TeamTableProps) => (
           <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
             {user.name}
           </Table.Cell>
-          <Table.Cell className="text-gray-700">
-            {user.srcID || "N/A"}
-          </Table.Cell>
-          <Table.Cell>
-            {user.idCardPhoto ? (
-              <a
-                href={user.idCardPhoto}
-                className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-              >
-                🪪ID CARD
-              </a>
-            ) : (
-              "No ID Card"
-            )}
-          </Table.Cell>
+          <Table.Cell className="text-gray-700">{user.srcID || "-"}</Table.Cell>
+          <Table.Cell>{user.college}</Table.Cell>
+          <Table.Cell>{user.mobile}</Table.Cell>
         </Table.Row>
       ))}
     </Table.Body>
@@ -184,20 +189,10 @@ const IndividualEventTable = ({ users }: IndividualEventTableProps) => (
               {user.name}
             </Table.Cell>
             <Table.Cell className="text-gray-700">
-              {user.srcID || "N/A"}
+              {user.srcID || "-"}
             </Table.Cell>
-            <Table.Cell>
-              {user.idCardPhoto ? (
-                <a
-                  href={user.idCardPhoto}
-                  className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                >
-                  🪪ID CARD
-                </a>
-              ) : (
-                "No ID Card"
-              )}
-            </Table.Cell>
+            <Table.Cell>{user.college}</Table.Cell>
+            <Table.Cell>{user.mobile}</Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>

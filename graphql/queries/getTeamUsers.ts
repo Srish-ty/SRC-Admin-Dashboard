@@ -10,6 +10,8 @@ query Query($orgId: ID) {
         idCardPhoto
         srcID
         name
+        college
+        mobile
       }
       teamName
       submittedPDF
@@ -18,8 +20,10 @@ query Query($orgId: ID) {
     eventRegistration {
       user {
         srcID
+        college
         name
         idCardPhoto
+        mobile
       }
       submittedPDF
     }
