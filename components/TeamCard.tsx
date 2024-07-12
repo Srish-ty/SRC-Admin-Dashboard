@@ -12,7 +12,7 @@ const HEADINGS = [
   "Member Name",
   "SRC ID",
   "College Name",
-  "Mobile No."
+  "Mobile No.",
 ];
 
 type MainTeamComponentProps = {
@@ -54,9 +54,9 @@ const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
   const {
     data: allTeamsData,
     error,
-    loading
+    loading,
   } = useQuery(GET_ALL_TEAMS, {
-    variables: { orgId }
+    variables: { orgId },
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -123,7 +123,7 @@ type TeamCardProps = {
 
 const TeamCard = ({ team, onImageClick }: TeamCardProps) => (
   <div className="border-2 w-full p-5 bg-black mb-6 shadow-md rounded-lg">
-    <div className="flex justify-between text-xl text-center text-white mb-6">
+    <div className="flex justify-between items-center text-xl text-center text-white mb-6 px-14">
       <div className="flex">
         <div className="font-normal">Team Name: </div>
         <h2 className="text-teal-300 font-bold px-2"> {team.teamName} </h2>
@@ -191,7 +191,7 @@ type IndividualEventTableProps = {
 
 const IndividualEventTable = ({
   users,
-  onImageClick
+  onImageClick,
 }: IndividualEventTableProps) => (
   <div className="shadow-lg border-2  border-gray-300 rounded-lg overflow-x-auto md:overflow-hidden">
     <Table hoverable>
