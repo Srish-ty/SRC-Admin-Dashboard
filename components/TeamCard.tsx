@@ -109,7 +109,7 @@ const RenderTeamCards = ({
     }
 
     if (error) {
-      toast.error("Failed to fetch events");
+      toast.error("Failed to fetch teamEvents");
     }
   }, [allTeamsData, error, eventName]);
 

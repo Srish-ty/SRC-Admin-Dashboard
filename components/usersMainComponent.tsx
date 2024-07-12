@@ -40,7 +40,7 @@ const UsersMainComponent = () => {
   };
 
   const {
-    data: allTeamsData,
+    data: allUsersData,
     error: Error,
     loading: Loading,
   } = useQuery(GET_ALL_USERS, {
@@ -50,18 +50,31 @@ const UsersMainComponent = () => {
   });
 
   useEffect(() => {
-    if (allTeamsData) {
-      console.log(allTeamsData);
-      setUsers(allTeamsData?.getAllUsers);
+    if (allUsersData) {
+      console.log(allUsersData);
+      setUsers(allUsersData?.getAllUsers);
       toast.success("Teams fetched successfully");
     }
     if (Error) {
       console.log("eventsError", Error);
       toast.error("Failed to fetch events");
     }
-  }, [allTeamsData, Error]);
+  }, [allUsersData, Error]);
 
   if (Loading) return <LoaderComp />;
+
+  const actualUsers = users.filter((user) => {
+    if (!user.srcID) {
+      return true;
+    } else {
+      const userCode = user.srcID.slice(0, 4);
+      return !(
+        userCode.toLowerCase() === "test" || userCode.toLowerCase() === "nitr"
+      );
+    }
+  });
+
+  console.log("Actual users", actualUsers);
 
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -70,7 +83,7 @@ const UsersMainComponent = () => {
     setSearchQueries({ ...searchQueries, [field]: e.target.value });
   };
 
-  const filteredUsers = users.filter((user) =>
+  const filteredUsers = actualUsers.filter((user) =>
     Object.keys(searchQueries).every((key) => {
       const userValue = (user as any)[key] || "";
       return userValue
@@ -115,7 +128,7 @@ const UsersMainComponent = () => {
             {tableHeadings.map((heading) => (
               <Table.HeadCell
                 key={heading}
-                className="text-lg text-teal-500 bg-slate-100"
+                className="text-lg text-teal-500 bg-slate-200 dark:bg-gray-600"
                 style={cellStyle}
               >
                 {heading}
@@ -156,10 +169,10 @@ const UsersMainComponent = () => {
             {filteredUsers.map((user, index) => (
               <Table.Row
                 key={index}
-                className="bg-white dark dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-200 hover:text-gray-700"
+                className="bg-white dark dark:border-gray-700 dark:bg-gray-700 hover:bg-gray-200 hover:text-gray-700"
               >
                 <Table.Cell
-                  className="font-medium text-gray-900 dark:text-white"
+                  className="text-gray-950 font-medium "
                   style={cellStyle}
                 >
                   {user.name}
