@@ -19,6 +19,7 @@ interface User {
   srcID: string;
   tSize: string;
   idCardPhoto: string;
+  aicheRegID: string;
 }
 
 const UsersMainComponent = () => {
@@ -63,7 +64,7 @@ const UsersMainComponent = () => {
 
   const filteredUsers = users.filter((user) =>
     Object.keys(searchQueries).every((key) => {
-      const userValue = (user as any)[key] || ""; // Fallback to an empty string if the value is null or undefined
+      const userValue = (user as any)[key] || "";
       return userValue
         .toLowerCase()
         .includes((searchQueries as any)[key].toLowerCase());
@@ -152,8 +153,12 @@ const UsersMainComponent = () => {
                     View ID Card
                   </a>
                 </Table.Cell>
-                <Table.Cell style={cellStyle}>{user.id}</Table.Cell>
-                <Table.Cell style={cellStyle}>{user.srcID}</Table.Cell>
+                <Table.Cell style={cellStyle}>
+                  {user.aicheRegID ? user.aicheRegID : "-"}
+                </Table.Cell>
+                <Table.Cell style={cellStyle}>
+                  {user.srcID ? user.srcID : "-"}
+                </Table.Cell>
                 <Table.Cell style={cellStyle}>{user.tSize}</Table.Cell>
               </Table.Row>
             ))}
