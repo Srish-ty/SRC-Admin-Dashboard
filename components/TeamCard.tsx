@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Table } from "flowbite-react";
 import toast from "react-hot-toast";
+// import GET_ALL_TEAMS from "@/graphql/queries/getTeamUsers";
 import GET_ALL_TEAMS from "@/graphql/queries/getTeamUsers";
 import { orgId } from "@/staticData/gqVars";
 
