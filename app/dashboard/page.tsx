@@ -27,7 +27,7 @@ export default function Home() {
                 <Button key={index} color="dark" className="mb-4 w-full" onClick={()=>router.push(`/dashboard/${item.uri}`)}>
                     {item.route}
                 </Button>))}
-                <Button color="failure" className="w-full mb-4 h-10" onClick={handleSignOut}>logout</Button>
+                <Button color="failure" className="w-full mb-4 h-10" onClick={()=>{handleSignOut();router.push('/')}}>logout</Button>
                
                
                 
