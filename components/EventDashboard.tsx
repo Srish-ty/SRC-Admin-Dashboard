@@ -14,7 +14,7 @@ const Dashboard = ({ eventName }: MainTeamComponentProps) => {
   const CN = decodeURIComponent(encodedString);
 
   return (
-    <div className="lg:fixed max-lg:flex max-lg:justify-center ">
+    <div className="lg:fixed flex justify-center ">
       <Sidebar
         aria-label="Default sidebar example"
         className="h-auto lg:h-screen w-screen  lg:w-auto"

@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import GET_ALL_TEAMS from "@/graphql/queries/getTeamUsers";
 import { orgId } from "@/staticData/gqVars"; // Import the modal component
 import IdCardModal from "./IdCardModal";
+import LoaderComp from "./loader";
 
 const HEADINGS = [
   "S.No.",
@@ -98,7 +99,7 @@ const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
     }
   }, [allTeamsData, error, eventName]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <LoaderComp />;
 
   return (
     <div className="overflow-x-auto max-md:w-[100%]">

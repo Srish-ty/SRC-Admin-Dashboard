@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Header from "./Header";
+import LoaderComp from "./loader";
 
 interface User {
   name: string;
@@ -27,17 +28,17 @@ const UsersMainComponent = () => {
     name: "",
     email: "",
     mobile: "",
-    college: "",
+    college: ""
   });
 
   const {
     data: allTeamsData,
     error: Error,
-    loading: Loading,
+    loading: Loading
   } = useQuery(GET_ALL_USERS, {
     variables: {
-      orgId: orgId,
-    },
+      orgId: orgId
+    }
   });
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const UsersMainComponent = () => {
     }
   }, [allTeamsData, Error]);
 
-  if (Loading) return <div>Loading...</div>;
+  if (Loading) return <LoaderComp />;
 
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -73,20 +74,20 @@ const UsersMainComponent = () => {
   const cellStyle = {
     borderRight: "1px solid #e6e6e6",
     borderBottom: "0.1px solid #ababab",
-    padding: "8px",
+    padding: "8px"
   };
 
   const inputStyle = {
     padding: "6px 8px",
     borderRadius: "4px",
     border: "1px solid #6ec2b7",
-    fontSize: "14px",
+    fontSize: "14px"
   };
 
   return (
     <div className="mt-1 px-2 mb-3.5 rounded-xl">
       <Header />
-      <div className="overflow-x-auto px-2 mt-20 md:mt-[6%]">
+      <div className="overflow-x-auto px-2 mt-24 md:mt-[105px]">
         <Table hoverable>
           <Table.Head>
             {tableHeadings.map((heading) => (
@@ -108,7 +109,7 @@ const UsersMainComponent = () => {
               "college",
               "idCardPhoto",
               "srcID",
-              "tSize",
+              "tSize"
             ].map((field) => (
               <Table.HeadCell key={field} className="p-0">
                 {(field === "name" ||

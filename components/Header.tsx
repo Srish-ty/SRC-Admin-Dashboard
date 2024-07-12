@@ -10,8 +10,8 @@ const Header = () => {
   const { handleSignOut } = useContext(AuthContext);
   return (
     <div>
-      <div className="fixed top-0 flex justify-center w-full z-50 bg-white ">
-        <div className="bg-black p-4 w-full text-white rounded-3xl h-auto md:h-[74px] flex flex-col md:flex-row justify-between items-center md:mt-3 ">
+      <div className="fixed top-0 left-0 flex justify-center w-full z-50 bg-white ">
+        <div className="bg-black p-4 w-full md:w-[93%] text-white md:rounded-3xl  md:h-[74px] flex flex-col md:flex-row justify-between items-center md:mt-3 ">
           <div className="text-lg font-semibold ml-10">
             SRC-2024 Team Dashboard
           </div>
