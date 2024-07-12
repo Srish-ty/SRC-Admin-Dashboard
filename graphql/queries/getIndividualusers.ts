@@ -11,6 +11,7 @@ const GET_ALL_USERS = gql`
     mobile
     name
     idCardPhoto
+    aicheRegID
   }
 }
 `
