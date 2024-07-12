@@ -1,3 +1,4 @@
+import React from "react";
 import MainTeamComponent from "@/components/MainTeamComponent";
 
 const Chem_A_Car = ({ params }: { params: { eventname: string } }) => {
