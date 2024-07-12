@@ -11,11 +11,12 @@ const Header = () => {
   return (
     <div>
       <div className="fixed top-0 flex justify-center w-full z-50 bg-white ">
-        <div className="bg-black p-4 w-[95%] text-white rounded-3xl h-[64px] flex flex-col md:flex-row justify-between  items-center mt-3  ">
+        <div className="bg-black p-4 w-full text-white rounded-3xl h-auto md:h-[74px] flex flex-col md:flex-row justify-between items-center md:mt-3 ">
           <div className="text-lg font-semibold ml-10">
             SRC-2024 Team Dashboard
           </div>
-          <div className="w-1/3">
+
+          <div className="w-[100%] sm:w-[70%] md:w-[50%]">
             <div className="grid grid-cols-4 gap-x-2">
               {Navdata.map((event, index) => (
                 <Link key={index} href={`/dashboard/${event.uri}`}>
