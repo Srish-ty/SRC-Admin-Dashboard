@@ -1,6 +1,9 @@
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { Table } from "flowbite-react";
+import { Table, Button } from "flowbite-react";
+import { FaLightbulb } from "react-icons/fa6";
+import { MdOutlineModeNight } from "react-icons/md";
+
 import toast from "react-hot-toast";
 import GET_ALL_TEAMS from "@/graphql/queries/getTeamUsers";
 import { orgId } from "@/staticData/gqVars"; // Import the modal component
@@ -17,6 +20,8 @@ const HEADINGS = [
 
 type MainTeamComponentProps = {
   eventName: string;
+  isDarkMode: boolean;
+  setDark: (isDark: boolean) => void;
 };
 
 type User = {
@@ -48,7 +53,11 @@ type Event = {
   eventRegistration: EventRegistration[];
 };
 
-const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
+const RenderTeamCards = ({
+  eventName,
+  isDarkMode,
+  setDark,
+}: MainTeamComponentProps) => {
   const [teams, setTeams] = useState<TeamRegistration[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const {
@@ -58,6 +67,11 @@ const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
   } = useQuery(GET_ALL_TEAMS, {
     variables: { orgId },
   });
+
+  const toggleTheme = () => {
+    setDark(!isDarkMode);
+    document.body.style.backgroundColor = isDarkMode ? "#fff" : "#1e2024";
+  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
@@ -95,7 +109,7 @@ const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
     }
 
     if (error) {
-      toast.error("Failed to fetch events");
+      toast.error("Failed to fetch teamEvents");
     }
   }, [allTeamsData, error, eventName]);
 
@@ -103,9 +117,23 @@ const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
 
   return (
     <div className="overflow-x-auto max-md:w-[100%]">
+      <div className="flex justify-end mb-4">
+        <Button onClick={() => toggleTheme()} className="rounded-3xl">
+          {isDarkMode ? (
+            <FaLightbulb size={15} />
+          ) : (
+            <MdOutlineModeNight size={20} />
+          )}
+        </Button>
+      </div>
       {teams.length > 0 ? (
         teams.map((team, index) => (
-          <TeamCard key={index} team={team} onImageClick={handleOpenModal} />
+          <TeamCard
+            key={index}
+            team={team}
+            isDark={isDarkMode}
+            onImageClick={handleOpenModal}
+          />
         ))
       ) : users.length > 0 ? (
         <IndividualEventTable users={users} onImageClick={handleOpenModal} />
@@ -119,9 +147,10 @@ const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
 type TeamCardProps = {
   team: TeamRegistration;
   onImageClick: (imageUrl: string) => void;
+  isDark: boolean;
 };
 
-const TeamCard = ({ team, onImageClick }: TeamCardProps) => (
+const TeamCard = ({ team, onImageClick, isDark }: TeamCardProps) => (
   <div className="border-2 w-full p-5 bg-black mb-6 shadow-md rounded-lg">
     <div className="flex justify-between items-center text-xl text-center text-white mb-6 px-14">
       <div className="flex">
@@ -141,7 +170,11 @@ const TeamCard = ({ team, onImageClick }: TeamCardProps) => (
       </span>
     </div>
     <div className="shadow-lg border-2 border-gray-300 rounded-lg overflow-hidden">
-      <TeamTable users={team.users} onImageClick={onImageClick} />
+      <TeamTable
+        users={team.users}
+        isDark={isDark}
+        onImageClick={onImageClick}
+      />
     </div>
   </div>
 );
@@ -149,14 +182,18 @@ const TeamCard = ({ team, onImageClick }: TeamCardProps) => (
 type TeamTableProps = {
   users: User[];
   onImageClick: (imageUrl: string) => void;
+  isDark: boolean;
 };
 
-const TeamTable = ({ users }: TeamTableProps) => (
-  <div className="overflow-x-auto">
+const TeamTable = ({ users, isDark }: TeamTableProps) => (
+  <div className={`overflow-x-auto ${isDark ? "dark" : ""}`}>
     <Table hoverable>
       <Table.Head className="bg-gray-100">
         {HEADINGS.map((item, index) => (
-          <Table.HeadCell key={index} className="text-gray-700 font-semibold">
+          <Table.HeadCell
+            key={index}
+            className="text-gray-700  dark:text-white font-semibold"
+          >
             {item}
           </Table.HeadCell>
         ))}
@@ -173,7 +210,7 @@ const TeamTable = ({ users }: TeamTableProps) => (
             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
               {user.name}
             </Table.Cell>
-            <Table.Cell className="text-gray-700">
+            <Table.Cell className="text-gray-700 dark:text-gray-200">
               {user.srcID || "-"}
             </Table.Cell>
             <Table.Cell>{user.college}</Table.Cell>

@@ -4,6 +4,8 @@ import { orgId } from "@/staticData/gqVars";
 import { Navdata, tableHeadings } from "@/staticData/userData";
 import { useQuery } from "@apollo/client";
 import { Button, Table, TextInput } from "flowbite-react";
+import { FaLightbulb } from "react-icons/fa6";
+import { MdOutlineModeNight } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
@@ -29,32 +31,50 @@ const UsersMainComponent = () => {
     name: "",
     email: "",
     mobile: "",
-    college: ""
+    college: "",
   });
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const toggleDarkMode = () => {
+    document.body.style.backgroundColor = isDarkMode ? "#fff" : "#1e2024";
+    setIsDarkMode(!isDarkMode);
+  };
 
   const {
-    data: allTeamsData,
+    data: allUsersData,
     error: Error,
-    loading: Loading
+    loading: Loading,
   } = useQuery(GET_ALL_USERS, {
     variables: {
-      orgId: orgId
-    }
+      orgId: orgId,
+    },
   });
 
   useEffect(() => {
-    if (allTeamsData) {
-      console.log(allTeamsData);
-      setUsers(allTeamsData?.getAllUsers);
+    if (allUsersData) {
+      console.log(allUsersData);
+      setUsers(allUsersData?.getAllUsers);
       toast.success("Teams fetched successfully");
     }
     if (Error) {
       console.log("eventsError", Error);
       toast.error("Failed to fetch events");
     }
-  }, [allTeamsData, Error]);
+  }, [allUsersData, Error]);
 
   if (Loading) return <LoaderComp />;
+
+  const actualUsers = users.filter((user) => {
+    if (!user.srcID) {
+      return true;
+    } else {
+      const userCode = user.srcID.slice(0, 4);
+      return !(
+        userCode.toLowerCase() === "test" || userCode.toLowerCase() === "nitr"
+      );
+    }
+  });
+
+  console.log("Actual users", actualUsers);
 
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -63,7 +83,7 @@ const UsersMainComponent = () => {
     setSearchQueries({ ...searchQueries, [field]: e.target.value });
   };
 
-  const filteredUsers = users.filter((user) =>
+  const filteredUsers = actualUsers.filter((user) =>
     Object.keys(searchQueries).every((key) => {
       const userValue = (user as any)[key] || "";
       return userValue
@@ -75,26 +95,40 @@ const UsersMainComponent = () => {
   const cellStyle = {
     borderRight: "0.2px solid #f5f5f5",
     borderBottom: "0.1px solid #ababab",
-    padding: "8px"
+    padding: "8px",
   };
 
   const inputStyle = {
     padding: "6px 8px",
     borderRadius: "4px",
     border: "1px solid #6ec2b7",
-    fontSize: "14px"
+    fontSize: "14px",
   };
 
   return (
     <div className="mt-1 px-2 mb-3.5 rounded-xl">
       <Header />
-      <div className="overflow-x-auto px-2 mt-24 md:mt-[105px]">
+
+      <div
+        className={`overflow-x-auto px-2 mt-20 md:mt-[5.5vw] ${
+          isDarkMode ? "dark" : ""
+        }`}
+      >
+        <div className="flex justify-end mb-4 ">
+          <Button onClick={() => toggleDarkMode()}>
+            {isDarkMode ? (
+              <FaLightbulb size={15} />
+            ) : (
+              <MdOutlineModeNight size={20} />
+            )}
+          </Button>
+        </div>
         <Table hoverable>
           <Table.Head>
             {tableHeadings.map((heading) => (
               <Table.HeadCell
                 key={heading}
-                className="text-lg text-teal-500 bg-slate-100"
+                className="text-lg text-teal-500 bg-slate-200 dark:bg-gray-600"
                 style={cellStyle}
               >
                 {heading}
@@ -111,7 +145,7 @@ const UsersMainComponent = () => {
               "idCardPhoto",
               "aicheRegID",
               "srcID",
-              "tSize"
+              "tSize",
             ].map((field) => (
               <Table.HeadCell key={field} className="p-0">
                 {(field === "name" ||
@@ -135,10 +169,10 @@ const UsersMainComponent = () => {
             {filteredUsers.map((user, index) => (
               <Table.Row
                 key={index}
-                className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-200 hover:text-gray-700"
+                className="bg-white dark dark:border-gray-700 dark:bg-gray-700 hover:bg-gray-200 hover:text-gray-700"
               >
                 <Table.Cell
-                  className="font-medium text-gray-900 dark:text-white"
+                  className="text-gray-950 font-medium "
                   style={cellStyle}
                 >
                   {user.name}
@@ -150,7 +184,7 @@ const UsersMainComponent = () => {
                 <Table.Cell style={cellStyle}>
                   <a
                     href={user.idCardPhoto}
-                    className="text-blue-600 hover:underline"
+                    className="text-blue-600 dark:text-teal-600 hover:underline"
                     target="_blank"
                   >
                     View ID Card

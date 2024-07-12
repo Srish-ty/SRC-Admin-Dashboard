@@ -5,38 +5,41 @@ import { useRouter } from "next/navigation";
 
 type MainTeamComponentProps = {
   eventName: string;
+  isDark: boolean;
 };
 
-const Dashboard = ({ eventName }: MainTeamComponentProps) => {
+const Dashboard = ({ eventName, isDark }: MainTeamComponentProps) => {
   const router = useRouter();
 
   const encodedString = eventName.toString();
   const CN = decodeURIComponent(encodedString);
 
   return (
-    <div className="lg:fixed flex justify-center ">
+    <div
+      className={`lg:fixed max-lg:flex max-lg:justify-center ${
+        isDark ? "dark" : ""
+      }`}
+    >
       <Sidebar
         aria-label="Default sidebar example"
-        className="h-auto lg:h-screen w-screen  lg:w-auto flex justify-center"
+        className="h-auto lg:h-screen w-screen lg:w-auto"
       >
-        <div className="flex justify-center w-full">
-        <div className="flex flex-col items-center gap-y-2 w-full">
+        <div className="flex flex-col items-center lg:mt-10 justify-center gap-y-2">
           {eventsList.map((event, index) => (
             <Link
               key={index}
               href={`/dashboard/events/${event}`}
-              className="w-[350px] lg:w-full flex justify-center"
+              className="w-[350px] lg:w-full "
             >
               <Button
-                className={`w-[80%] flex justify-center items-center bg-gray-800 h-auto p-2 text-white hover:bg-gray-700 ${
-                  event === CN && "bg-blue-700"
+                className={`w-[80%] flex justify-center mx-auto items-center bg-gray-800 h-auto p-2 text-white hover:bg-gray-700 ${
+                  event === CN && "bg-blue-700 dark:bg-teal-900"
                 }`}
               >
                 {event}
               </Button>
             </Link>
           ))}
-        </div>
         </div>
       </Sidebar>
     </div>
