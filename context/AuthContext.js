@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
         const userData = {
           name: user.displayName,
           email: user.email,
-          uid: user.uid
+          uid: user.uid,
         };
         setUserData(userData);
       } else {
@@ -31,18 +31,35 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const handleGoogleSignIn = async () => {
+    const [storedUser, setItem] = useState("");
     try {
-      const user = await signInWithGoogle();
-      if (user) {
+      const existingUser = localStorage.getItem("storedUser");
+      if (existingUser) {
         const userData = {
           name: user.displayName,
           email: user.email,
-          uid: user.uid
+          uid: user.uid,
         };
         setUserData(userData);
-        toast.success("Successfully signed in with Google.");
+        setItem(userData);
+        toast.success("You have already logged in.");
       } else {
-        toast.error("Google sign-in failed. Please try again.");
+        const user = await signInWithGoogle();
+        if (user) {
+          const userData = {
+            name: user.displayName,
+            email: user.email,
+            uid: user.uid,
+          };
+          setUserData(userData);
+          setItem(userData);
+          useEffect(() => {
+            localStorage.setItem("storedUser", JSON.stringify(storedUser));
+          }, [items]);
+          toast.success("Successfully signed in with Google.");
+        } else {
+          toast.error("Google sign-in failed. Please try again.");
+        }
       }
     } catch (error) {
       console.error("Error signing in with Google:", error);
