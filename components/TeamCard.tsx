@@ -54,6 +54,8 @@ const RenderTeamCards = ({ eventName }: MainTeamComponentProps) => {
     }
   }, [allTeamsData, Error, eventName]);
 
+  if(Loading) return <div>Loading...</div>
+
   return (
     <div className="overflow-x-auto">
       {teams.length > 0 ? (
