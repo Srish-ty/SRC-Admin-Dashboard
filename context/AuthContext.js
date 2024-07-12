@@ -3,62 +3,67 @@ import { createContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { toast } from "react-hot-toast";
 import { auth, signInWithGoogle, signOutUser } from "@/config/Firebase/auth";
-import { useRouter } from "next/navigation";
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [userInfo, setUserData] = useState({});
-
-  const listenForAuthChanges = () => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const idToken = await user.getIdToken();
-        localStorage.setItem("auth-token", idToken);
-        const userData = {
-          name: user.displayName,
-          email: user.email,
-          uid: user.uid,
-        };
-        setUserData(userData);
-      } else {
-        setUserData({});
-      }
-    });
-  };
+  const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
-    listenForAuthChanges();
+    if (typeof window !== "undefined") {
+      const storedUser = localStorage.getItem("storedUser");
+      if (storedUser) {
+        setUserInfo(JSON.parse(storedUser));
+      }
+    }
   }, []);
 
-  const handleGoogleSignIn = async () => {
-    const [storedUser, setItem] = useState("");
-    try {
-      const existingUser = localStorage.getItem("storedUser");
-      if (existingUser) {
-        const userData = {
-          name: user.displayName,
-          email: user.email,
-          uid: user.uid,
-        };
-        setUserData(userData);
-        setItem(userData);
-        toast.success("You have already logged in.");
-      } else {
-        const user = await signInWithGoogle();
+  useEffect(() => {
+    const listenForAuthChanges = () => {
+      onAuthStateChanged(auth, async (user) => {
         if (user) {
+          const idToken = await user.getIdToken();
+          localStorage.setItem("auth-token", idToken);
           const userData = {
             name: user.displayName,
             email: user.email,
             uid: user.uid,
           };
-          setUserData(userData);
-          setItem(userData);
-          useEffect(() => {
-            localStorage.setItem("storedUser", JSON.stringify(storedUser));
-          }, [items]);
-          toast.success("Successfully signed in with Google.");
+          setUserInfo(userData);
+          localStorage.setItem("storedUser", JSON.stringify(userData));
         } else {
-          toast.error("Google sign-in failed. Please try again.");
+          setUserInfo({});
+          localStorage.removeItem("auth-token");
+          localStorage.removeItem("storedUser");
+        }
+      });
+    };
+
+    listenForAuthChanges();
+  }, []);
+
+  const handleGoogleSignIn = async () => {
+    try {
+      if (typeof window !== "undefined") {
+        const existingUser = localStorage.getItem("storedUser");
+        if (existingUser) {
+          const userData = JSON.parse(existingUser);
+          setUserInfo(userData);
+          toast.success("You are already logged in.");
+        } else {
+          const user = await signInWithGoogle();
+          if (user) {
+            const userData = {
+              name: user.displayName,
+              email: user.email,
+              uid: user.uid,
+            };
+            setUserInfo(userData);
+            localStorage.setItem("storedUser", JSON.stringify(userData));
+            toast.success("Successfully signed in with Google.");
+          } else {
+            toast.error("Google sign-in failed. Please try again.");
+          }
         }
       }
     } catch (error) {
@@ -70,8 +75,11 @@ export const AuthProvider = ({ children }) => {
   const handleSignOut = async () => {
     try {
       await signOutUser();
-      setUserData({});
-      localStorage.removeItem("auth-token");
+      setUserInfo({});
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("auth-token");
+        localStorage.removeItem("storedUser");
+      }
       toast.success("Successfully signed out.");
     } catch (error) {
       console.error("Error signing out:", error);
@@ -81,7 +89,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ userInfo, setUserData, handleGoogleSignIn, handleSignOut }}
+      value={{ userInfo, setUserInfo, handleGoogleSignIn, handleSignOut }}
     >
       {children}
     </AuthContext.Provider>
