@@ -4,6 +4,8 @@ import { orgId } from "@/staticData/gqVars";
 import { Navdata, tableHeadings } from "@/staticData/userData";
 import { useQuery } from "@apollo/client";
 import { Button, Table, TextInput } from "flowbite-react";
+import { FaLightbulb } from "react-icons/fa6";
+import { MdOutlineModeNight } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
@@ -30,6 +32,11 @@ const UsersMainComponent = () => {
     mobile: "",
     college: "",
   });
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const toggleDarkMode = () => {
+    document.body.style.backgroundColor = isDarkMode ? "#fff" : "#1e2024";
+    setIsDarkMode(!isDarkMode);
+  };
 
   const {
     data: allTeamsData,
@@ -87,7 +94,21 @@ const UsersMainComponent = () => {
   return (
     <div className="mt-1 px-2 mb-3.5 rounded-xl">
       <Header />
-      <div className="overflow-x-auto px-2 mt-20 md:mt-[6%]">
+
+      <div
+        className={`overflow-x-auto px-2 mt-20 md:mt-[5.5vw] ${
+          isDarkMode ? "dark" : ""
+        }`}
+      >
+        <div className="flex justify-end mb-4 ">
+          <Button onClick={() => toggleDarkMode()}>
+            {isDarkMode ? (
+              <FaLightbulb size={15} />
+            ) : (
+              <MdOutlineModeNight size={20} />
+            )}
+          </Button>
+        </div>
         <Table hoverable>
           <Table.Head>
             {tableHeadings.map((heading) => (
@@ -134,7 +155,7 @@ const UsersMainComponent = () => {
             {filteredUsers.map((user, index) => (
               <Table.Row
                 key={index}
-                className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-200 hover:text-gray-700"
+                className="bg-white dark dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-200 hover:text-gray-700"
               >
                 <Table.Cell
                   className="font-medium text-gray-900 dark:text-white"
@@ -149,7 +170,7 @@ const UsersMainComponent = () => {
                 <Table.Cell style={cellStyle}>
                   <a
                     href={user.idCardPhoto}
-                    className="text-blue-600 hover:underline"
+                    className="text-blue-600 dark:text-teal-600 hover:underline"
                     target="_blank"
                   >
                     View ID Card
