@@ -23,7 +23,7 @@ const Dashboard = ({ eventName }: MainTeamComponentProps) => {
           {eventsList.map((event, index) => (
             <Link
               key={index}
-              href={`/dashboard/teams/${event}`}
+              href={`/dashboard/events/${event}`}
               className="w-full"
             >
               <Button
