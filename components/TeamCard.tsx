@@ -157,17 +157,17 @@ const TeamCard = ({ team, onImageClick, isDark }: TeamCardProps) => (
         <div className="font-normal">Team Name: </div>
         <h2 className="text-teal-300 font-bold px-2"> {team.teamName} </h2>
       </div>
-      <span className="text-base">
-        Link to Submitted PDF:{" "}
-        <a
-          href={team.submittedPDF}
-          className="hover:underline text-sm hover:cursor-pointer hover:text-white underline text-blue-500"
-        >
-          {team.submittedPDF
-            ? team.submittedPDF.substring(0, 28) + "..."
-            : "No PDF Submitted"}
-        </a>
-      </span>
+      {team.submittedPDF ? (
+        <span className="text-base">
+          Link to Submitted PDF:{" "}
+          <a
+            href={team.submittedPDF}
+            className="hover:underline text-sm hover:cursor-pointer hover:text-white underline text-blue-500"
+          >
+            {team.submittedPDF.substring(0, 28) + "..."}
+          </a>
+        </span>
+      ) : null}
     </div>
     <div className="shadow-lg border-2 border-gray-300 rounded-lg overflow-hidden">
       <TeamTable
