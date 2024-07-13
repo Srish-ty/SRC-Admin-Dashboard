@@ -32,11 +32,13 @@ const Dashboard = ({ eventName, isDark }: MainTeamComponentProps) => {
               className="w-[350px] lg:w-full "
             >
               <Button
-                className={`w-[80%] flex justify-center mx-auto items-center bg-gray-800 h-auto p-2 text-white hover:bg-gray-700 ${
+                className={`w-[80%] flex justify-center mx-auto items-center bg-gray-800 h-auto p-0 md:p-2 text-white hover:bg-gray-700 ${
                   event === CN && "bg-blue-700 dark:bg-teal-900"
                 }`}
               >
-                {event}
+                <span className="text-[11px] sm:text-sm lg:text-base">
+                  {event}
+                </span>
               </Button>
             </Link>
           ))}

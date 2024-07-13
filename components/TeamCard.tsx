@@ -152,7 +152,7 @@ type TeamCardProps = {
 
 const TeamCard = ({ team, onImageClick, isDark }: TeamCardProps) => (
   <div className="border-2 w-full p-5 bg-black mb-6 shadow-md rounded-lg">
-    <div className="flex justify-between items-center text-xl text-center text-white mb-6 px-14">
+    <div className="flex justify-between items-center text-base sm:text-lg lg:text-xl text-center text-white mb-6 px-0 md:px-14">
       <div className="flex">
         <div className="font-normal">Team Name: </div>
         <h2 className="text-teal-300 font-bold px-2"> {team.teamName} </h2>
@@ -188,7 +188,7 @@ type TeamTableProps = {
 const TeamTable = ({ users, isDark }: TeamTableProps) => (
   <div className={`overflow-x-auto ${isDark ? "dark" : ""}`}>
     <Table hoverable>
-      <Table.Head className="bg-gray-100">
+      <Table.Head className="bg-gray-100 text-xs sm:text-base lg:text-lg">
         {HEADINGS.map((item, index) => (
           <Table.HeadCell
             key={index}
@@ -202,7 +202,7 @@ const TeamTable = ({ users, isDark }: TeamTableProps) => (
         {users.map((user, index) => (
           <Table.Row
             key={index}
-            className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50"
+            className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50 text-xs sm:text-sm lg:text-base"
           >
             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
               {index + 1}
