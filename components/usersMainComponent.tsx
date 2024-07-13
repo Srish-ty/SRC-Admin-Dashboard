@@ -51,7 +51,7 @@ const UsersMainComponent = () => {
 
   useEffect(() => {
     if (allUsersData) {
-      console.log(allUsersData);
+      // console.log(allUsersData);
       setUsers(allUsersData?.getAllUsers);
       toast.success("Users fetched successfully");
     }
@@ -74,7 +74,7 @@ const UsersMainComponent = () => {
     }
   });
 
-  console.log("Actual users", actualUsers);
+  // console.log("Actual users", actualUsers);
 
   const handleSearchChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -95,14 +95,14 @@ const UsersMainComponent = () => {
   const cellStyle = {
     borderRight: "0.2px solid #f5f5f5",
     borderBottom: "0.1px solid #ababab",
-    padding: "8px",
+    padding: "6px",
   };
 
   const inputStyle = {
     padding: "6px 8px",
     borderRadius: "4px",
     border: "1px solid #6ec2b7",
-    fontSize: "14px",
+    fontSize: "12px",
   };
 
   return (
@@ -128,7 +128,7 @@ const UsersMainComponent = () => {
             {tableHeadings.map((heading) => (
               <Table.HeadCell
                 key={heading}
-                className="text-lg text-teal-500 bg-slate-200 dark:bg-gray-600"
+                className="text-xs sm:text-base lg:text-lg text-teal-500 bg-slate-200 dark:bg-gray-600"
                 style={cellStyle}
               >
                 {heading}
@@ -158,7 +158,7 @@ const UsersMainComponent = () => {
                     placeholder={`Search ${field.toUpperCase()}`}
                     value={(searchQueries as any)[field]}
                     onChange={(e) => handleSearchChange(e, field)}
-                    className="w-full text-sm bg-[#9e9e9e]"
+                    className="w-full text-xs md:text-sm bg-[#9e9e9e]"
                     style={inputStyle}
                   />
                 )}
@@ -169,7 +169,7 @@ const UsersMainComponent = () => {
             {filteredUsers.map((user, index) => (
               <Table.Row
                 key={index}
-                className="bg-white dark dark:border-gray-700 dark:bg-gray-700 hover:bg-gray-200 hover:text-gray-700"
+                className="bg-white dark dark:border-gray-700 dark:bg-gray-700 hover:bg-gray-200 hover:text-gray-700 text-[10px] sm:text-xs lg:text-sm"
               >
                 <Table.Cell
                   className="text-gray-950 font-medium "

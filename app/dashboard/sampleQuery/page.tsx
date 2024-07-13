@@ -10,19 +10,19 @@ export default function Page() {
     data: eventsData,
     loading: eventsLoading,
     error: eventsError,
-    refetch: refetchEvents
+    refetch: refetchEvents,
   } = useQuery(GET_EVENTS, {
     variables: {
-      orgId: orgId
-    }
+      orgId: orgId,
+    },
   });
   useEffect(() => {
     if (eventsData) {
       toast.success("Events fetched successfully");
-      console.log("eventsData", eventsData);
+      // console.log("eventsData", eventsData);
     }
     if (eventsError) {
-      console.log("eventsError", eventsError);
+      // console.log("eventsError", eventsError);
       toast.error("Failed to fetch events");
     }
   }, [eventsData, eventsError]);
