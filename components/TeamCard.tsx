@@ -136,7 +136,11 @@ const RenderTeamCards = ({
           />
         ))
       ) : users.length > 0 ? (
-        <IndividualEventTable users={users} onImageClick={handleOpenModal} />
+        <IndividualEventTable
+          users={users}
+          onImageClick={handleOpenModal}
+          isDark={isDarkMode}
+        />
       ) : (
         <div>No teams registered for this event.</div>
       )}
@@ -224,17 +228,26 @@ const TeamTable = ({ users, isDark }: TeamTableProps) => (
 type IndividualEventTableProps = {
   users: User[];
   onImageClick: (imageUrl: string) => void;
+  isDark: boolean;
 };
 
 const IndividualEventTable = ({
   users,
   onImageClick,
+  isDark,
 }: IndividualEventTableProps) => (
-  <div className="shadow-lg border-2  border-gray-300 rounded-lg overflow-x-auto md:overflow-hidden">
+  <div
+    className={`shadow-lg border-2  border-gray-300 rounded-lg overflow-x-auto md:overflow-hidden ${
+      isDark ? "dark" : ""
+    }`}
+  >
     <Table hoverable>
       <Table.Head className="bg-gray-100">
         {HEADINGS.map((item, index) => (
-          <Table.HeadCell key={index} className="text-gray-700 font-semibold">
+          <Table.HeadCell
+            key={index}
+            className="text-gray-700 dark:text-white font-semibold"
+          >
             {item}
           </Table.HeadCell>
         ))}

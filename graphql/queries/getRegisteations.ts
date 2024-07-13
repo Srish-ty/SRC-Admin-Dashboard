@@ -13,6 +13,7 @@ query Query($orgId: ID) {
       srcID
       tSize
     }
+    submittedPDF
   }
 }
 `
