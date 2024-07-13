@@ -53,11 +53,11 @@ const UsersMainComponent = () => {
     if (allUsersData) {
       console.log(allUsersData);
       setUsers(allUsersData?.getAllUsers);
-      toast.success("Teams fetched successfully");
+      toast.success("Users fetched successfully");
     }
     if (Error) {
-      console.log("eventsError", Error);
-      toast.error("Failed to fetch events");
+      console.log("usersError", Error);
+      toast.error("Failed to fetch users");
     }
   }, [allUsersData, Error]);
 
