@@ -8,10 +8,11 @@ import { FaLightbulb } from "react-icons/fa6";
 import { MdOutlineModeNight } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, CSSProperties } from "react";
 import toast from "react-hot-toast";
 import Header from "./Header";
 import LoaderComp from "./loader";
+import { text } from "stream/consumers";
 
 interface User {
   name: string;
@@ -92,14 +93,21 @@ const UsersMainComponent = () => {
     })
   );
 
-  const cellStyle = {
+  const cellStyle: CSSProperties = {
     borderRight: "0.2px solid #f5f5f5",
     borderBottom: "0.1px solid #ababab",
     padding: "6px",
   };
 
-  const inputStyle = {
-    padding: "6px 8px",
+  const cellHeadStyle: CSSProperties = {
+    borderRight: "0.2px solid #f5f5f5",
+    borderBottom: "0.1px solid #ababab",
+    padding: "0px 6px",
+    textAlign: "center",
+  };
+
+  const inputStyle: CSSProperties = {
+    padding: "5px 6px",
     borderRadius: "4px",
     border: "1px solid #6ec2b7",
     fontSize: "12px",
@@ -128,8 +136,8 @@ const UsersMainComponent = () => {
             {tableHeadings.map((heading) => (
               <Table.HeadCell
                 key={heading}
-                className="text-xs sm:text-base lg:text-lg text-teal-500 bg-slate-200 dark:bg-gray-600"
-                style={cellStyle}
+                className="text-xs sm:text-[15px] lg:text-base text-teal-500 bg-slate-200 dark:bg-gray-600"
+                style={cellHeadStyle}
               >
                 {heading}
               </Table.HeadCell>
@@ -169,7 +177,7 @@ const UsersMainComponent = () => {
             {filteredUsers.map((user, index) => (
               <Table.Row
                 key={index}
-                className="bg-white dark dark:border-gray-700 dark:bg-gray-700 hover:bg-gray-200 hover:text-gray-700 text-[10px] sm:text-xs lg:text-sm"
+                className="bg-white dark dark:border-gray-700 dark:bg-gray-700 hover:bg-gray-200 hover:text-gray-700 text-[10px] sm:text-[11px] lg:text-[13px]"
               >
                 <Table.Cell
                   className="text-gray-950 font-medium "
