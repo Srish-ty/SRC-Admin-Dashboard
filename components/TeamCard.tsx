@@ -160,8 +160,12 @@ const TeamCard = ({ team, onImageClick, isDark }: TeamCardProps) => (
   <div className="border-2 w-full p-5 bg-black mb-6 shadow-md rounded-lg">
     <div className="flex justify-between items-center text-base sm:text-lg lg:text-xl text-center text-white mb-6 px-0 md:px-14">
       <div className="flex">
-        <div className="font-normal">Team Name: </div>
-        <h2 className="text-teal-300 font-bold px-2"> {team.teamName} </h2>
+        <div className="font-normal text-sm sm:text-base md:text-xl">
+          Team Name:{" "}
+        </div>
+        <h2 className="text-teal-300 underline px-2 text-sm sm:text-base md:text-lg">
+          {team.teamName}{" "}
+        </h2>
       </div>
       {team.submittedPDF ? (
         <span className="text-base">
