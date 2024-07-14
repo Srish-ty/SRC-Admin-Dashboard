@@ -17,6 +17,7 @@ const HEADINGS = [
   "College Name",
   "Mobile No.",
 ];
+const INDI_HEADINGS = [...HEADINGS, "Submitted PDF"];
 
 type MainTeamComponentProps = {
   eventName: string;
@@ -30,6 +31,7 @@ type User = {
   name: string;
   college: string | null;
   mobile: string;
+  pdf: string | null;
 };
 
 type TeamRegistration = {
@@ -99,9 +101,9 @@ const RenderTeamCards = ({
           setTeams(matchedEvent.teamRegistration);
         } else {
           setUsers(
-            matchedEvent.eventRegistration.map(
-              (registration) => registration.user
-            )
+            matchedEvent.eventRegistration.map((registration) => {
+              return { ...registration.user, pdf: registration.submittedPDF };
+            })
           );
         }
         toast.success("Event fetched successfully");
@@ -136,7 +138,11 @@ const RenderTeamCards = ({
           />
         ))
       ) : users.length > 0 ? (
-        <IndividualEventTable users={users} onImageClick={handleOpenModal} />
+        <IndividualEventTable
+          users={users}
+          onImageClick={handleOpenModal}
+          isDark={isDarkMode}
+        />
       ) : (
         <div>No teams registered for this event.</div>
       )}
@@ -154,20 +160,24 @@ const TeamCard = ({ team, onImageClick, isDark }: TeamCardProps) => (
   <div className="border-2 w-full p-5 bg-black mb-6 shadow-md rounded-lg">
     <div className="flex justify-between items-center text-base sm:text-lg lg:text-xl text-center text-white mb-6 px-0 md:px-14">
       <div className="flex">
-        <div className="font-normal">Team Name: </div>
-        <h2 className="text-teal-300 font-bold px-2"> {team.teamName} </h2>
+        <div className="font-normal text-sm sm:text-base md:text-xl">
+          Team Name:{" "}
+        </div>
+        <h2 className="text-teal-300 underline px-2 text-sm sm:text-base md:text-lg">
+          {team.teamName}{" "}
+        </h2>
       </div>
-      <span className="text-base">
-        Link to Submitted PDF:{" "}
-        <a
-          href={team.submittedPDF}
-          className="hover:underline text-sm hover:cursor-pointer hover:text-white underline text-blue-500"
-        >
-          {team.submittedPDF
-            ? team.submittedPDF.substring(0, 28) + "..."
-            : "No PDF Submitted"}
-        </a>
-      </span>
+      {team.submittedPDF ? (
+        <span className="text-base">
+          Link to Submitted PDF:{" "}
+          <a
+            href={team.submittedPDF}
+            className="hover:underline text-sm hover:cursor-pointer hover:text-white underline text-blue-500"
+          >
+            {team.submittedPDF.substring(0, 28) + "..."}
+          </a>
+        </span>
+      ) : null}
     </div>
     <div className="shadow-lg border-2 border-gray-300 rounded-lg overflow-hidden">
       <TeamTable
@@ -188,11 +198,11 @@ type TeamTableProps = {
 const TeamTable = ({ users, isDark }: TeamTableProps) => (
   <div className={`overflow-x-auto ${isDark ? "dark" : ""}`}>
     <Table hoverable>
-      <Table.Head className="bg-gray-100 text-xs sm:text-base lg:text-lg">
+      <Table.Head className="bg-gray-100 ">
         {HEADINGS.map((item, index) => (
           <Table.HeadCell
             key={index}
-            className="text-gray-700  dark:text-white font-semibold"
+            className="text-gray-700 bg-gray-300 dark:text-white font-semibold text-[10px] md:text-[12px]"
           >
             {item}
           </Table.HeadCell>
@@ -202,7 +212,7 @@ const TeamTable = ({ users, isDark }: TeamTableProps) => (
         {users.map((user, index) => (
           <Table.Row
             key={index}
-            className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50 text-xs sm:text-sm lg:text-base"
+            className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50 text-[10px] md:text-sm"
           >
             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
               {index + 1}
@@ -224,17 +234,26 @@ const TeamTable = ({ users, isDark }: TeamTableProps) => (
 type IndividualEventTableProps = {
   users: User[];
   onImageClick: (imageUrl: string) => void;
+  isDark: boolean;
 };
 
 const IndividualEventTable = ({
   users,
   onImageClick,
+  isDark,
 }: IndividualEventTableProps) => (
-  <div className="shadow-lg border-2  border-gray-300 rounded-lg overflow-x-auto md:overflow-hidden">
+  <div
+    className={`shadow-lg border-2  border-gray-300 rounded-lg overflow-x-auto md:overflow-hidden ${
+      isDark ? "dark" : ""
+    }`}
+  >
     <Table hoverable>
-      <Table.Head className="bg-gray-100">
-        {HEADINGS.map((item, index) => (
-          <Table.HeadCell key={index} className="text-gray-700 font-semibold">
+      <Table.Head className="bg-gray-400">
+        {INDI_HEADINGS.map((item, index) => (
+          <Table.HeadCell
+            key={index}
+            className="text-gray-700 bg-gray-300 dark:text-white font-semibold text-[10px] md:text-xs lg:text-sm"
+          >
             {item}
           </Table.HeadCell>
         ))}
@@ -243,7 +262,7 @@ const IndividualEventTable = ({
         {users.map((user, index) => (
           <Table.Row
             key={index}
-            className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50"
+            className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50 text-[10px] md:text-sm"
           >
             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
               {index + 1}
@@ -256,6 +275,19 @@ const IndividualEventTable = ({
             </Table.Cell>
             <Table.Cell>{user.college}</Table.Cell>
             <Table.Cell>{user.mobile}</Table.Cell>
+            <Table.Cell className="py-0 md:py-4">
+              {user.pdf ? (
+                <Button
+                  href={user.pdf || ""}
+                  target="_blank"
+                  className="bg-teal-500 text-white p-0 md:p-0.5 m-0"
+                >
+                  <span className="text-[10px] md:text-sm"> View </span>
+                </Button>
+              ) : (
+                "No PDF"
+              )}
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
