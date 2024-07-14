@@ -17,6 +17,7 @@ const HEADINGS = [
   "College Name",
   "Mobile No.",
 ];
+const INDI_HEADINGS = [...HEADINGS, "Submitted PDF"];
 
 type MainTeamComponentProps = {
   eventName: string;
@@ -30,6 +31,7 @@ type User = {
   name: string;
   college: string | null;
   mobile: string;
+  pdf: string | null;
 };
 
 type TeamRegistration = {
@@ -99,9 +101,9 @@ const RenderTeamCards = ({
           setTeams(matchedEvent.teamRegistration);
         } else {
           setUsers(
-            matchedEvent.eventRegistration.map(
-              (registration) => registration.user
-            )
+            matchedEvent.eventRegistration.map((registration) => {
+              return { ...registration.user, pdf: registration.submittedPDF };
+            })
           );
         }
         toast.success("Event fetched successfully");
@@ -192,11 +194,11 @@ type TeamTableProps = {
 const TeamTable = ({ users, isDark }: TeamTableProps) => (
   <div className={`overflow-x-auto ${isDark ? "dark" : ""}`}>
     <Table hoverable>
-      <Table.Head className="bg-gray-100 text-xs sm:text-base lg:text-lg">
+      <Table.Head className="bg-gray-100 ">
         {HEADINGS.map((item, index) => (
           <Table.HeadCell
             key={index}
-            className="text-gray-700  dark:text-white font-semibold"
+            className="text-gray-700 bg-gray-300 dark:text-white font-semibold text-[10px] md:text-[12px]"
           >
             {item}
           </Table.HeadCell>
@@ -206,7 +208,7 @@ const TeamTable = ({ users, isDark }: TeamTableProps) => (
         {users.map((user, index) => (
           <Table.Row
             key={index}
-            className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50 text-xs sm:text-sm lg:text-base"
+            className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50 text-[10px] md:text-sm"
           >
             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
               {index + 1}
@@ -242,11 +244,11 @@ const IndividualEventTable = ({
     }`}
   >
     <Table hoverable>
-      <Table.Head className="bg-gray-100">
-        {HEADINGS.map((item, index) => (
+      <Table.Head className="bg-gray-400">
+        {INDI_HEADINGS.map((item, index) => (
           <Table.HeadCell
             key={index}
-            className="text-gray-700 dark:text-white font-semibold"
+            className="text-gray-700 bg-gray-300 dark:text-white font-semibold text-[10px] md:text-xs lg:text-sm"
           >
             {item}
           </Table.HeadCell>
@@ -256,7 +258,7 @@ const IndividualEventTable = ({
         {users.map((user, index) => (
           <Table.Row
             key={index}
-            className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50"
+            className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50 text-[10px] md:text-sm"
           >
             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
               {index + 1}
@@ -269,6 +271,19 @@ const IndividualEventTable = ({
             </Table.Cell>
             <Table.Cell>{user.college}</Table.Cell>
             <Table.Cell>{user.mobile}</Table.Cell>
+            <Table.Cell className="py-0 md:py-4">
+              {user.pdf ? (
+                <Button
+                  href={user.pdf || ""}
+                  target="_blank"
+                  className="bg-teal-500 text-white p-0 md:p-0.5 m-0"
+                >
+                  <span className="text-[10px] md:text-sm"> View </span>
+                </Button>
+              ) : (
+                "No PDF"
+              )}
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
