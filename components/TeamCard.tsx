@@ -6,7 +6,7 @@ import { MdOutlineModeNight } from "react-icons/md";
 
 import toast from "react-hot-toast";
 import GET_ALL_TEAMS from "@/graphql/queries/getTeamUsers";
-import { orgId } from "@/staticData/gqVars"; // Import the modal component
+import { orgId } from "@/staticData/gqVars";
 import IdCardModal from "./IdCardModal";
 import LoaderComp from "./loader";
 
@@ -26,6 +26,7 @@ type MainTeamComponentProps = {
 };
 
 type User = {
+  id: string;
   idCardPhoto: string | null;
   srcID: string | null;
   name: string;
@@ -39,6 +40,7 @@ type TeamRegistration = {
   teamName: string;
   submittedPDF: string;
   users: User[];
+  userIDs: string[];
 };
 
 type EventRegistration = {
