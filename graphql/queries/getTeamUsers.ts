@@ -7,6 +7,7 @@ query Query($orgId: ID) {
    isTeamEvent
     teamRegistration {
       users {
+        id
         idCardPhoto
         srcID
         name
@@ -15,7 +16,7 @@ query Query($orgId: ID) {
       }
       teamName
       submittedPDF
-
+      userIDs
     }
     eventRegistration {
       user {
